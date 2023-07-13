@@ -1,30 +1,22 @@
-<script>
+<script setup>
 import { useField, useForm } from 'vee-validate';
+import * as yup from 'yup';
 
-export default {
-  setup() {
-    const { handleSubmit, handleReset } = useForm({
-      validationSchema: {
-        username(value) {
-          if (value) return true;
-          return 'Username is required.';
-        },
-        password(value) {
-          if (value) return true;
-          return 'password is required.';
-        },
-      },
-    });
-    const username = useField('username');
-    const password = useField('password');
+const schema = yup.object({
+    username: yup.string().required(),
+    password: yup.string().required(),
+  })
 
-    const submit = handleSubmit((values) => {
-      alert(JSON.stringify(values, null, 2));
-    });
+const { handleSubmit } = useForm({
+  validationSchema: schema,
+});
+const username = useField('username');
+const password = useField('password');
 
-    return { username, password, submit, handleReset };
-  },
-};
+const emit = defineEmits(['submit']);
+const submit = handleSubmit((values) => {
+  emit('submit', values);
+});
 </script>
 
 <template>
