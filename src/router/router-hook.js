@@ -10,13 +10,7 @@ export const routerHook = async (to, from, next) => {
   
   // Update auth store state
   authStore.isLogin = isAuthenticated;
-  
-  console.log({
-    to: to.name,
-    requiresAuth: to.meta.requiresAuth,
-    isAuthenticated,
-  });
-  
+
   // Route requires authentication
   if (to.meta.requiresAuth) {
     if (!isAuthenticated) {

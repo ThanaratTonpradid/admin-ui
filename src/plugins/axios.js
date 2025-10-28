@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ConfigName } from '../constants';
 import { appConfig } from '../config/app.config';
 import router from '../router';
+import { i18n } from './i18n';
 
 // Create axios instance
 export const axiosInstance = axios.create({
@@ -125,30 +126,30 @@ axiosInstance.interceptors.response.use(
       
       switch (status) {
         case 401:
-          error.message = data?.message || 'Unauthorized. Please login again.';
+          error.message = data?.message || i18n.global.t('error.unauthorized');
           break;
         case 403:
-          error.message = data?.message || 'Forbidden. You do not have permission.';
+          error.message = data?.message || i18n.global.t('error.forbidden');
           break;
         case 404:
-          error.message = data?.message || 'Resource not found.';
+          error.message = data?.message || i18n.global.t('error.notFound');
           break;
         case 422:
-          error.message = data?.message || 'Validation error.';
+          error.message = data?.message || i18n.global.t('error.validationError');
           error.validationErrors = data?.errors || {};
           break;
         case 500:
-          error.message = data?.message || 'Internal server error. Please try again later.';
+          error.message = data?.message || i18n.global.t('error.serverError');
           break;
         default:
-          error.message = data?.message || 'An error occurred. Please try again.';
+          error.message = data?.message || i18n.global.t('error.unknownError');
       }
     } else if (error.request) {
       // Request was made but no response received
-      error.message = 'Network error. Please check your connection.';
+      error.message = i18n.global.t('error.networkError');
     } else {
       // Something else happened
-      error.message = error.message || 'An unexpected error occurred.';
+      error.message = error.message || i18n.global.t('error.unknownError');
     }
     
     return Promise.reject(error);

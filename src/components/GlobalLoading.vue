@@ -12,7 +12,7 @@
         color="primary"
         indeterminate
       ></v-progress-circular>
-      <div class="mt-4 text-h6">Loading...</div>
+      <div class="mt-4 text-h6">{{ $t('common.loading') }}</div>
     </div>
   </v-overlay>
 </template>

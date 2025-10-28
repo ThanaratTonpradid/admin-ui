@@ -3,6 +3,7 @@ import { loginService, logoutService } from '../services/auth';
 import { ConfigName } from '../constants';
 import router from '../router';
 import { useAppStore } from './app';
+import { i18n } from '../plugins/i18n';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -34,11 +35,11 @@ export const useAuthStore = defineStore('auth', {
           this.tokenExpiresAt = Date.now() + (res.expiresIn * 1000);
         }
         
-        appStore.showNotification('Login successful!', 'success');
+        appStore.showNotification(i18n.global.t('auth.loginSuccess'), 'success');
         router.replace({ name: 'profile' });
       } catch (error) {
         console.error('Login error:', error);
-        appStore.setError(error.message || 'Login failed. Please try again.');
+        appStore.setError(error.message || i18n.global.t('auth.loginFailed'));
         throw error;
       } finally {
         appStore.setLoading(false);
@@ -56,7 +57,7 @@ export const useAuthStore = defineStore('auth', {
         this.user = null;
         this.tokenExpiresAt = null;
         
-        appStore.showNotification('Logout successful!', 'success');
+        appStore.showNotification(i18n.global.t('auth.logoutSuccess'), 'success');
         router.replace({ name: 'login' });
       } catch (error) {
         console.error('Logout error:', error);

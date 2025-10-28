@@ -1,10 +1,13 @@
 <script setup>
 import { useField, useForm } from 'vee-validate';
+import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 
+const { t } = useI18n();
+
 const schema = yup.object({
-    username: yup.string().required(),
-    password: yup.string().required(),
+    username: yup.string().required(t('validation.required', { field: t('auth.username') })),
+    password: yup.string().required(t('validation.required', { field: t('auth.password') })),
   })
 
 const { handleSubmit } = useForm({
@@ -24,7 +27,7 @@ const submit = handleSubmit((values) => {
     <v-text-field
       v-model="username.value.value"
       :error-messages="username.errorMessage.value"
-      label="Username"
+      :label="$t('auth.username')"
       density="compact"
       variant="outlined"
     ></v-text-field>
@@ -32,12 +35,14 @@ const submit = handleSubmit((values) => {
     <v-text-field
       v-model="password.value.value"
       :error-messages="password.errorMessage.value"
-      label="Password"
+      :label="$t('auth.password')"
       type="password"
       density="compact"
       variant="outlined"
     ></v-text-field>
 
-    <v-btn class="me-4" color="primary" block type="submit"> Login </v-btn>
+    <v-btn class="me-4" color="primary" block type="submit">
+      {{ $t('auth.login') }}
+    </v-btn>
   </form>
 </template>
